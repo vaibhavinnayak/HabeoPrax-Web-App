@@ -1,6 +1,7 @@
 # HabeoPrax 🚀
 ## Master Your Habits, Master Your Life
-frontend
+![Preview](frontend/public/logo.png)
+
 <div align="center">
 
 *A smart, engaging habit tracking web application with Chrome extension that helps users build and maintain healthy habits through insightful statistics, motivational rewards, and an intuitive user interface.*
@@ -34,7 +35,7 @@ HabeoPrax was built with a vision to make habit-building fun and effective. Whet
 ## 🛠️ Technologies Used
 
 ### Frontend
-- **HTML5, CSS3, JavaScript** - Core web technologies
+- **HTML, CSS, JavaScript** - Core web technologies
 - **React** - Component-based UI library
 - **Tailwind CSS** - Utility-first CSS framework
 - **Chart.js** - Interactive data visualizations
@@ -62,7 +63,7 @@ HabeoPrax was built with a vision to make habit-building fun and effective. Whet
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/habeoprax.git
+git clone https://github.com/AppajiDheeraj/HabeopPrax.git
 cd habeoprax
 ```
 
@@ -72,7 +73,7 @@ cd habeoprax
 npm install
 
 # Install frontend dependencies
-cd client
+cd frontend
 npm install
 cd ..
 ```
@@ -110,7 +111,7 @@ npm run dev
 2. Enable "Developer mode"
 3. Click "Load unpacked" and select the `extension` folder
 4. The HabeoPrax extension should now appear in your toolbar
-
+<br>
 ## 📱 Usage
 
 ### Getting Started
@@ -125,7 +126,7 @@ npm run dev
 - **Analytics**: Detailed insights into your habit patterns and trends
 - **Rewards System**: Earn points and badges for consistency
 - **Notifications**: Stay reminded with email and browser notifications
-
+<br>
 ## 🏗️ Project Structure
 
 ```
@@ -200,7 +201,7 @@ Directory structure:
 
 ```
 
-
+<br>
 ## 🚀 Deployment
 
 ### Vercel Deployment
@@ -216,7 +217,7 @@ npm run build
 # Deploy to your preferred hosting platform
 ```
 
-
+<br>
 ## 🔮 Future Scope
 
 - **📱 Mobile Application**: Native iOS and Android apps
@@ -224,7 +225,7 @@ npm run build
 - **🤖 AI Integration**: Machine learning for personalized recommendations
 - **📈 Advanced Analytics**: Predictive insights and trend analysis
 - **⌚ Wearables Integration**: Connect with fitness trackers and smartwatches
-
+<br>
 ## 👥 Team
 
 ### 🎯 Mentors
@@ -242,7 +243,7 @@ npm run build
 - **Ajitesh Kallepalli**
 - **Anirudh Trichy**
 
-
+<br>
 ## 📄 License
 
 Yet to be added.
