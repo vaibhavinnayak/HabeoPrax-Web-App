@@ -1,16 +1,11 @@
 # HabeoPrax 🚀
 ## Master Your Habits, Master Your Life
-
+frontend
 <div align="center">
-
-![GitHub stars](https://img.shields.io/github/stars/yourusername/habeoprax?style=social)
-![GitHub forks](https://img.shields.io/github/forks/yourusername/habeoprax?style=social)
-![GitHub issues](https://img.shields.io/github/issues/yourusername/habeoprax)
-![GitHub license](https://img.shields.io/github/license/yourusername/habeoprax)
 
 *A smart, engaging habit tracking web application with Chrome extension that helps users build and maintain healthy habits through insightful statistics, motivational rewards, and an intuitive user interface.*
 
-[🌟 Features](#features) • [🚀 Demo](#demo) • [📦 Installation](#installation) • [🛠️ Usage](#usage) • [🤝 Contributing](#contributing)
+[🌟 Features](#features) • [🚀 Demo](#demo) • [📦 Installation](#installation) • [🛠️ Usage](#usage) 
 
 </div>
 
@@ -131,13 +126,77 @@ npm run dev
 - **Rewards System**: Earn points and badges for consistency
 - **Notifications**: Stay reminded with email and browser notifications
 
-## 📊 Screenshots
-
-*[Add screenshots of your application here]*
-
 ## 🏗️ Project Structure
 
 ```
+Directory structure:
+└── appajidheeraj-habeoprax/
+    ├── README.md
+    ├── app.js
+    ├── emailNotifications.js
+    ├── package.json
+    ├── config/
+    │   ├── googleStrategy.js
+    │   └── jwtstrategy.js
+    ├── db/
+    │   ├── connection.js
+    │   └── schema.js
+    ├── frontend/
+    │   ├── README.md
+    │   ├── eslint.config.js
+    │   ├── index.html
+    │   ├── package-lock.json
+    │   ├── package.json
+    │   ├── postcss.config.js
+    │   ├── tailwind.config.js
+    │   ├── vite.config.js
+    │   ├── .gitignore
+    │   ├── HabeoPrax-chrome-extension/
+    │   │   ├── api.js
+    │   │   ├── auth.js
+    │   │   ├── background.js
+    │   │   ├── manifest.json
+    │   │   ├── popup.html
+    │   │   ├── popup.js
+    │   │   └── style.css
+    │   ├── public/
+    │   └── src/
+    │       ├── App.jsx
+    │       ├── index.css
+    │       ├── LandingSite.jsx
+    │       ├── main.jsx
+    │       ├── slide-from-right.jsx
+    │       ├── assets/
+    │       │   └── purple-tick.webp
+    │       ├── Components/
+    │       │   ├── Faqs.jsx
+    │       │   ├── Features.jsx
+    │       │   ├── FirstPart.jsx
+    │       │   ├── Footer.jsx
+    │       │   ├── GoogleSuccessPage.jsx
+    │       │   ├── HabitTracker.jsx
+    │       │   ├── LoginPage.jsx
+    │       │   ├── NotificationPage.jsx
+    │       │   ├── Pricing.jsx
+    │       │   ├── quotes.js
+    │       │   ├── RegisterPage.jsx
+    │       │   └── WeeklyReport.jsx
+    │       ├── Effects-Misc-components/
+    │       │   ├── Navbar.jsx
+    │       │   └── ProgressBar.jsx
+    │       └── Styles/
+    │           ├── AuthForm.css
+    │           ├── Faqs.css
+    │           ├── Features.css
+    │           ├── FirstPart.css
+    │           ├── Footer copy.css
+    │           ├── Footer.css
+    │           ├── Navbar.css
+    │           └── Pricing.css
+    └── homepage/
+        ├── addinghabit.js
+        ├── addingptstreak.js
+        └── profile.js
 
 ```
 
@@ -183,25 +242,11 @@ npm run build
 - **Ajitesh Kallepalli**
 - **Anirudh Trichy**
 
-## 📚 References
-
-- [MDN Web Docs](https://developer.mozilla.org/)
-- [Chrome Extension Documentation](https://developer.chrome.com/docs/extensions/)
-- [Chart.js Documentation](https://www.chartjs.org/)
-- [React Documentation](https://reactjs.org/)
-- [MongoDB University](https://university.mongodb.com/)
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Yet to be added.
 
-## 🙏 Acknowledgments
-
-- freeCodeCamp for educational resources
-- Traversy Media for tutorials
-- The Net Ninja for React guidance
-- Simplilearn for development insights
-- All open-source contributors
 
 ---
 
