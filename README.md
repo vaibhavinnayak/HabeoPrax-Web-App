@@ -112,6 +112,7 @@ npm run dev
 3. Click "Load unpacked" and select the `extension` folder
 4. The HabeoPrax extension should now appear in your toolbar
 <br>
+
 ## 📱 Usage
 
 ### Getting Started
@@ -127,6 +128,7 @@ npm run dev
 - **Rewards System**: Earn points and badges for consistency
 - **Notifications**: Stay reminded with email and browser notifications
 <br>
+
 ## 🏗️ Project Structure
 
 ```
@@ -202,6 +204,7 @@ Directory structure:
 ```
 
 <br>
+
 ## 🚀 Deployment
 
 ### Vercel Deployment
@@ -218,6 +221,7 @@ npm run build
 ```
 
 <br>
+
 ## 🔮 Future Scope
 
 - **📱 Mobile Application**: Native iOS and Android apps
@@ -226,6 +230,7 @@ npm run build
 - **📈 Advanced Analytics**: Predictive insights and trend analysis
 - **⌚ Wearables Integration**: Connect with fitness trackers and smartwatches
 <br>
+
 ## 👥 Team
 
 ### 🎯 Mentors
@@ -244,8 +249,8 @@ npm run build
 - **Anirudh Trichy**
 
 <br>
-## 📄 License
 
+## 📄 License
 Yet to be added.
 
 
