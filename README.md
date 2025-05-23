@@ -1,7 +1,7 @@
 # HabeoPrax 🚀
 ## Master Your Habits, Master Your Life
 <p align="center">
-  <img src="frontend/public/logo.png" alt="App Screenshot" width="65%">
+  <img src="frontend/public/logo.png" alt="App Screenshot" width="50%">
 </p>
 
 <div align="center">
