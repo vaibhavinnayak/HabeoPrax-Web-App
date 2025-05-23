@@ -29,8 +29,6 @@ HabeoPrax was built with a vision to make habit-building fun and effective. Whet
 - **📱 Responsive Design**: Seamless experience across all devices
 
 ### 🔧 Chrome Extension
-- **⚡ Quick Logging**: Log habits directly from browser toolbar
-- **💾 Offline Functionality**: Works offline and syncs when back online
 - **🔔 System Notifications**: Native system tray notifications
 - **🎯 Lightweight UI**: Minimal interface for quick interactions
 
