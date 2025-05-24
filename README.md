@@ -82,7 +82,7 @@ cd ..
 Create a `.env` file in the root directory:
 ```env
 # Database
-MONGODB_URI=mongodb://localhost:27017/habeoprax
+URI=mongodb://localhost:27017/habeoprax
 
 # JWT Secret
 JWT_SECRET=your_jwt_secret_here
