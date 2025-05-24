@@ -64,7 +64,7 @@ HabeoPrax was built with a vision to make habit-building fun and effective. Whet
 ### 1. Clone the Repository
 ```bash
 git clone https://github.com/AppajiDheeraj/HabeopPrax.git
-cd habeoprax
+cd HabeoPrax
 ```
 
 ### 2. Install Dependencies
