@@ -154,85 +154,109 @@ app.get('/user', passport.authenticate('jwt', { session: false }), async (req, r
   }
 });
 
+    app.get('/notifications', passport.authenticate('jwt', { session: false }), async (req, res) => {
+      try {
+        const user = await Usermodel.findById(req.user.id);
+        if (!user) return res.status(404).json({ message: "User not found" });
+        console.log("Fetched notifications:", user.notifications);
+        res.json(user.notifications.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)));
+      } catch (err) {
+        console.error("Error fetching notifications:", err);
+        res.status(500).json({ message: "Server error" });
+      }
+    });
 
-        
-app.get('/notifications', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  const user = await Usermodel.findById(req.user.id);
-  if (!user) return res.status(404).json({ message: "User not found" });
-  console.log("Fetched notifications:", user.notifications);
-  res.json(user.notifications.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)));
-});
+    app.put('/notifications/:notificationId/read', passport.authenticate('jwt', { session: false }), async (req, res) => {
+      try {
+        const user = await Usermodel.findById(req.user.id);
+        if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+        }
 
-app.post('/notify-completion', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  try {
-    const user = await Usermodel.findById(req.user.id);
-    if (!user) return res.status(404).json({ message: "User not found" });
+        const notification = user.notifications.id(req.params.notificationId);
+        if (!notification) {
+          return res.status(404).json({ message: 'Notification not found' });
+        }
 
-    const today = new Date().toDateString();
-    const alreadyNotified = user.notifications.some(n =>
-      n.message.includes("completed all your habits") &&
-      new Date(n.timestamp).toDateString() === today
-    );
+        notification.read = true;
+        await user.save();
 
-    if (!alreadyNotified) {
-      console.log("Before pushing notification:", user.notifications.length);
-      user.notifications.push({
-        type: 'completion',
-        message: `🎉 Awesome! You've completed all your habits for today. Keep it up!`,
-        timestamp: new Date()
-      });
-      console.log("After pushing notification:", user.notifications.length);
-      await user.save();
-      console.log("✅ Notification saved to DB");
+        res.json({
+          success: true,
+          message: 'Notification marked as read',
+          notifications: user.notifications.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+        });
+      } catch (err) {
+        console.error('Failed to mark notification as read:', err);
+        res.status(500).json({ message: 'Server error' });
+      }
+    });
 
-    }
+    app.post('/notify-completion', passport.authenticate('jwt', { session: false }), async (req, res) => {
+      try {
+        const user = await Usermodel.findById(req.user.id);
+        if (!user) return res.status(404).json({ message: "User not found" });
 
-    res.status(200).json({ success: true, message: 'Notification added' });
+        const today = new Date().toDateString();
+        const alreadyNotified = user.notifications.some(n =>
+          n.message.includes("completed all your habits") &&
+          new Date(n.timestamp).toDateString() === today
+        );
 
-  } catch (e) {
-    console.error("Notification error", e);
-    res.status(500).json({ success: false, message: e.message });
-  }
-});
+        if (!alreadyNotified) {
+          console.log("Before pushing notification:", user.notifications.length);
+          user.notifications.push({
+            type: 'completion',
+            message: `🎉 Awesome! You've completed all your habits for today. Keep it up!`,
+            timestamp: new Date()
+          });
+          console.log("After pushing notification:", user.notifications.length);
+          await user.save();
+          console.log("✅ Notification saved to DB");
+        }
 
-
-
+        res.status(200).json({ success: true, message: 'Notification added' });
+      } catch (e) {
+        console.error("Notification error", e);
+        res.status(500).json({ success: false, message: e.message });
+      }
+    });
 
     cron.schedule('*/10 * * * *', async () => {
-  const now = new Date();
-  const users = await Usermodel.find();
+      const now = new Date();
+      const users = await Usermodel.find();
 
-  for (const user of users) {
-    const userHabits = await Habitmodel.findOne({ userId: user._id });
-    if (!userHabits) continue;
+      for (const user of users) {
+        const userHabits = await Habitmodel.findOne({ userId: user._id });
+        if (!userHabits) continue;
 
-    for (const habit of userHabits.habits) {
-      const habitTime = moment(habit.time, ['h:mm A', 'HH:mm']); // 4:30 p.m => moment time
-      const nowTime = moment();
+        for (const habit of userHabits.habits) {
+          const habitTime = moment(habit.time, ['h:mm A', 'HH:mm']);
+          const nowTime = moment();
 
-      // Check if habit is set for today and it's over 1 hour late and not done
-      const today = nowTime.format('dddd');
-      const isToday = habit.day.includes(today);
-      const isLate = nowTime.diff(habitTime, 'minutes') > 60;
-      const notDone = !habit.done;
+          const today = nowTime.format('dddd');
+          const isToday = habit.day.includes(today);
+          const isLate = nowTime.diff(habitTime, 'minutes') > 60;
+          const notDone = !habit.done;
 
-      if (isToday && isLate && notDone) {
-        const alreadyNotified = user.notifications.some(n => 
-          n.message.includes(habit.title) &&
-          moment(n.timestamp).isAfter(moment().subtract(6, 'hours'))
-        );
-        if (!alreadyNotified) {
-          user.notifications.push({
-            type: 'reminder',
-            message: `⏰ You haven't completed "${habit.title}" scheduled for ${habit.time}. Stay on track!`,
-            timestamp: new Date(),
-          });
-          await user.save();
+          if (isToday && isLate && notDone) {
+            const alreadyNotified = user.notifications.some(n => 
+              n.message.includes(habit.title) &&
+              moment(n.timestamp).isAfter(moment().subtract(6, 'hours'))
+            );
+            if (!alreadyNotified) {
+              user.notifications.push({
+                type: 'reminder',
+                message: `⏰ You haven't completed "${habit.title}" scheduled for ${habit.time}. Stay on track!`,
+                timestamp: new Date(),
+              });
+              await user.save();
+            }
+          }
         }
       }
-    }
-  }
-});
+    });
+
 
     console.log("db connection :D")
       
