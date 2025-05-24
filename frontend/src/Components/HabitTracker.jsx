@@ -3,25 +3,41 @@ import quotes from './quotes';
 import { FaChrome, FaCheckCircle } from 'react-icons/fa';
 
 export default function HabitTracker() {
-    const [username, setUsername] = useState('');
+   
     const [habits, setHabits] = useState([]);
     const [hasFetched, setHasFetched] = useState(false);
+     const [userName, setUserName] = useState('');
+      const [showDropdown, setShowDropdown] = useState(false); 
+ const userId = localStorage.getItem('userId');
+   const handleSignOut = () => {        
+  localStorage.removeItem('token');
+  localStorage.removeItem('userName');
+  window.location.replace("/");
+};
     const addHabit = (habit) => {
   setHabits((prev) => [...prev, habit]);
 };
 useEffect(() => {
-  const token = localStorage.getItem('token');
+  let token = localStorage.getItem('token');
   if (!token) return;
-
+    if (!token.startsWith('Bearer ')) {
+  token = `Bearer ${token}`;
+}
   const fetchHabits = async () => {
     try {
       const res = await fetch('http://localhost:5000/habitdata', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+          Authorization: token,
         },
       });
+          if (!res.ok) {
+        const errorText = await res.text();
+        console.log('Failed to fetch habits:', errorText);
+        return;
+      }
+
 
       const data = await res.json();
       if (data.success) {
@@ -39,15 +55,17 @@ useEffect(() => {
 }, []);
 
 const syncHabits = async (updatedHabits) => {
-  const token = localStorage.getItem('token');
+  let token = localStorage.getItem('token');
   if (!token) return;
-
+if (!token.startsWith('Bearer ')) {
+  token = `Bearer ${token}`;
+}
   try {
     const res = await fetch("http://localhost:5000/habitdata", {
       method: 'PUT',
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: token,
       },
       body: JSON.stringify({ habits: updatedHabits }),
     });
@@ -62,16 +80,19 @@ const syncHabits = async (updatedHabits) => {
 
    useEffect(() => {
     if (!hasFetched) return; 
-    const token=localStorage.getItem('token')
+    let token=localStorage.getItem('token')
     console.log(habits)
     if(!token) return;
+    if (!token.startsWith('Bearer ')) {
+  token = `Bearer ${token}`;
+}
     const addHabits=async () => {
       try {
         const res= await fetch("http://localhost:5000/habitdata", {
           method:'PUT',
           headers: {
             "Content-Type":"application/json",
-            Authorization: `Bearer ${token}`,
+            Authorization: token,
           },
           body:JSON.stringify({habits})
           
@@ -104,18 +125,23 @@ const [notification, setNotification] = useState({ show: false, message: '', typ
   const [points, setPoints] = useState(0);
   const [streak, setStreak] = useState(0);
   const [badges, setBadges] = useState([]);
+
  useEffect(()=> {
+    if (points === 0 && streak === 0 && badges.length==0) return;
    const addpointsandstreak= async()=> {
-     const token=localStorage.getItem('token')
+     let token=localStorage.getItem('token')
      if(!token) return;
+     if (!token.startsWith('Bearer ')) {
+  token = `Bearer ${token}`;
+}
     try {
      let res= await fetch('http://localhost:5000/addingptstreak',{
          method:"PUT",
          headers: {
           "Content-Type":"application/json",
-           Authorization: `Bearer ${token}`,
+           Authorization: token,
          },
-         body:JSON.stringify({points,streak})
+         body:JSON.stringify({points,streak,badges})
          })
          if(!res.ok) {
           const errtext=await res.text();
@@ -128,7 +154,59 @@ const [notification, setNotification] = useState({ show: false, message: '', typ
 
    }
    addpointsandstreak();
-   },[points,streak])
+   },[points,streak,badges])
+
+useEffect(() => {
+  const name = localStorage.getItem('userName');
+  if (name) setUserName(name);
+}, []);
+
+
+   useEffect(() => {
+  setBadges(prevBadges => {
+    let newBadges = [...prevBadges];
+    if (streak === 3 && !newBadges.includes("🥉 3-Day Streak")) {
+      newBadges.push("🥉 3-Day Streak");
+    }
+    if (streak === 7 && !newBadges.includes("🥈 7-Day Streak")) {
+      newBadges.push("🥈 7-Day Streak");
+    }
+    return newBadges;
+  });
+}, [streak]);
+
+   useEffect(() => {
+  const fetchProgress = async () => {
+    let token = localStorage.getItem('token');
+    if (!token) return;
+if (!token.startsWith('Bearer ')) {
+  token = `Bearer ${token}`;
+}
+    try {
+      const res = await fetch('http://localhost:5000/user-progress', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      });
+
+      if (!res.ok) {
+        const errText = await res.text();
+        console.log("Failed to fetch user progress:", errText);
+        return;
+      }
+
+      const data = await res.json();
+      setPoints(data.points);
+      setStreak(data.streak);
+      setBadges(data.badges); 
+    } catch (err) {
+      console.log("Error fetching progress:", err);
+    }
+  };
+
+  fetchProgress();
+}, []);
   const dayToIndex = {
     Sunday: 0,
     Monday: 1,
@@ -172,7 +250,7 @@ const saveHabit = () => {
   const updatedHabits = [...habits];
 
   if (editIndex !== null) {
-    // Edit existing habit, preserve `done` state
+
     updatedHabits[editIndex] = {
       ...formData,
       day: [formData.day],
@@ -204,7 +282,7 @@ const saveHabit = () => {
 
   const toggleHabitDone = async (index) => {
     const updatedHabits = [...habits];
-    const habit = updatedHabits[index];
+    const habit = {...updatedHabits[index]};
     habit.done = !habit.done;
     if(typeof(habit.pointsEarned)!=="number" || isNaN(habit.pointsEarned))
       habit.pointsEarned=0;
@@ -224,18 +302,11 @@ const saveHabit = () => {
       const earnedPoints = daysEarly * 10;
       habit.pointsEarned=earnedPoints
       setPoints(prev => prev + earnedPoints);
-
-      const newStreak = streak + 1;
-      setStreak(newStreak);
-
-      if (newStreak === 3 && !badges.includes("🥉 3-Day Streak")) {
-        setBadges(prev => [...prev, "🥉 3-Day Streak"]);
-      }
-      if (newStreak === 7 && !badges.includes("🥈 7-Day Streak")) {
-        setBadges(prev => [...prev, "🥈 7-Day Streak"]);
-      }
+        setStreak(prev => prev + 1); 
+       
+      };
     }
-    } else {
+     else {
   
   const pointsToSubtract = habit.pointsEarned; 
   setPoints(prev => {
@@ -248,6 +319,7 @@ const saveHabit = () => {
   setStreak(0);
    
     }
+    updatedHabits[index] = habit;
      setHabits(updatedHabits);
      syncHabits(updatedHabits);
 
@@ -262,7 +334,10 @@ const saveHabit = () => {
   const allDone = todaysHabits.length > 0 && todaysHabits.every(h => h.done);
 
   if (allDone) {
-    const token = localStorage.getItem('token');
+    let token = localStorage.getItem('token');
+     if (!token.startsWith('Bearer ')) {
+  token = `Bearer ${token}`;
+}
     try {
       await fetch('http://localhost:5000/notify-completion', {
         method: 'POST',
@@ -314,7 +389,7 @@ const saveHabit = () => {
     setIsDarkMode(newMode);
     localStorage.setItem('dark-mode', newMode.toString());
   };
-
+console.log("userName is:", userName);
   return(     
   <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 text-gray-800 dark:text-gray-100 transition-colors duration-500 p-6 sm:p-8 font-sans">
             {/* Notification */}
@@ -336,19 +411,38 @@ const saveHabit = () => {
               </div>
 
               {/* Profile + Mode Toggle */}
-              <div className="flex items-center gap-4 mt-4 lg:mt-0">
-                <div className="flex items-center bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-full px-5 py-2 shadow-lg hover:scale-105 transition-transform">
-                  <span className="text-lg">👤</span>
-                  <span className="ml-2 font-semibold">{username || 'Ajitesh'}</span>
-                </div>
-                <button
-                  onClick={toggleDarkMode}
-                  className="text-2xl p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-                  title="Toggle dark mode"
-                >
-                  {isDarkMode ? '🌞' : '🌙'}
-                </button>
-              </div>
+            <div className="relative flex items-center gap-4 mt-4 lg:mt-0">
+  <div className="flex items-center bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-full px-5 py-2 shadow-lg hover:scale-105 transition-transform">
+  <div
+    className="flex items-center cursor-pointer"
+    onClick={() => setShowDropdown(!showDropdown)}
+  >
+    <span className="text-lg">👤</span>
+    <span className="ml-2 font-semibold">{userName}</span>
+  </div>
+</div>
+
+
+  {showDropdown && (
+    <div className="absolute right-0 top-14 w-32 bg-white dark:bg-gray-700 shadow-lg rounded-lg py-2 z-50">
+      <button
+        onClick={handleSignOut}
+        className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-800"
+      >
+        Sign Out
+      </button>
+    </div>
+  )}
+
+  <button
+    onClick={toggleDarkMode}
+    className="text-2xl p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+    title="Toggle dark mode"
+  >
+    {isDarkMode ? '🌞' : '🌙'}
+  </button>
+</div>
+
             </header>
 
             <div className="flex flex-col lg:flex-row gap-8"></div>
@@ -358,7 +452,7 @@ const saveHabit = () => {
                 
                 {/* Quote Section */}
                 <section className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-2xl p-8 shadow-xl">
-                  <h2 className="text-2xl font-bold mb-3">Good Morning, {username || 'Ajitesh'}! 🌞</h2>
+                  <h2 className="text-2xl font-bold mb-3">Welcome {userName}! 🌞</h2>
                   <p className="italic text-lg">{quote.text}</p>
                   <p className="text-right mt-3 font-medium">– {quote.author}</p>
                 </section>
@@ -601,9 +695,9 @@ const saveHabit = () => {
             {/* Bottom Navigation */}
             <nav className="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-white dark:bg-gray-800 shadow-2xl rounded-full px-8 py-4 flex items-center gap-10">
                 <button title="Home" onClick={() => window.location.href = "/home"} className="text-2xl hover:text-purple-600 dark:hover:text-purple-400 transition-colors">🏠</button>
-                <button title="Weekly Report" onClick={() => window.location.href = "/weekly-report"} className="text-2xl hover:text-purple-600 dark:hover:text-purple-400 transition-colors">📈</button>
+                <button title="Weekly Report" onClick={() => window.location.href = `/reports/${userId}`} className="text-2xl hover:text-purple-600 dark:hover:text-purple-400 transition-colors">📈</button>
                 <button title="Reminders" onClick={() => window.location.href = "/notifications"} className="text-2xl hover:text-purple-600 dark:hover:text-purple-400 transition-colors">🔔</button>
-                <button title="Settings" className="text-2xl hover:text-purple-600 dark:hover:text-purple-400 transition-colors">⚙️</button>
+             
             </nav>
         </div>
     );

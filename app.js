@@ -16,6 +16,8 @@ dotenv.config();
 configurePassport(passport);
 import homeRoute from './homepage/addinghabit.js'
 import pointRoute from './homepage/addingptstreak.js'
+import progressRoute from './homepage/userprogress.js'
+import reportRoute from './homepage/report.js';
 const app = express();
 const PORT = process.env.PORT;
 
@@ -23,6 +25,8 @@ app.use(cors());
 app.use(express.json());
 app.use(homeRoute);
 app.use(pointRoute);
+app.use(progressRoute);
+app.use(reportRoute);
 app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
 
@@ -49,6 +53,13 @@ const saltRound = 10
              return  res.status(201).json(data)
         })
             .catch((e) => {
+                   if (e.code === 11000) {
+                const duplicateField = Object.keys(e.keyPattern)[0];
+                return res.status(400).json({
+                  success: false,
+                  message: `User with that ${duplicateField} already exists`,
+                });
+              }
               console.log("Error creating user")
               return  res.status(500).json({success:false, message:"Error creating user", error:e.message})
            
@@ -93,13 +104,12 @@ const saltRound = 10
                   message:"Error signing token ",
                   error:err.message||err,})
                     }
-
-                     
-                    //Habitmodel.findOneAndUpdate({ userId: user._id },  { $set: { lastLogin: new Date() } }, { upsert: true }  )
                   
                    return res.json({
                     success: true,
                     token: 'Bearer ' + token,
+                    name: user.username, 
+                   _id: user._id.toString(),
                   })
                 })
 
@@ -108,7 +118,7 @@ const saltRound = 10
               }
               
                 else
-            res.json("You don't have an account,kindly register")
+            return res.json("You don't have an account,kindly register")
           })
     .catch(e =>  {
           console.log("Error logging in")
@@ -157,11 +167,42 @@ app.get('/user', passport.authenticate('jwt', { session: false }), async (req, r
 
         
 app.get('/notifications', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  const user = await Usermodel.findById(req.user.id);
-  if (!user) return res.status(404).json({ message: "User not found" });
-  console.log("Fetched notifications:", user.notifications);
-  res.json(user.notifications.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)));
+   try {
+        const user = await Usermodel.findById(req.user.id);
+        if (!user) return res.status(404).json({ message: "User not found" });
+        console.log("Fetched notifications:", user.notifications);
+        res.json(user.notifications.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)));
+      } catch (err) {
+        console.error("Error fetching notifications:", err);
+        res.status(500).json({ message: "Server error" });
+      }
 });
+
+ app.put('/notifications/:notificationId/read', passport.authenticate('jwt', { session: false }), async (req, res) => {
+      try {
+        const user = await Usermodel.findById(req.user.id);
+        if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+        }
+
+     const notification = user.notifications.id(req.params.notificationId);
+        if (!notification) {
+          return res.status(404).json({ message: 'Notification not found' });
+        }
+
+        notification.read = true;
+        await user.save();
+
+        res.json({
+          success: true,
+          message: 'Notification marked as read',
+          notifications: user.notifications.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+        });
+      } catch (err) {
+        console.error('Failed to mark notification as read:', err);
+        res.status(500).json({ message: 'Server error' });
+      }
+    });
 
 app.post('/notify-completion', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
@@ -186,7 +227,7 @@ app.post('/notify-completion', passport.authenticate('jwt', { session: false }),
       console.log("✅ Notification saved to DB");
     }
 
-    res.status(200).json({ success: true });
+     res.status(200).json({ success: true, message: 'Notification added' });
   } catch (e) {
     console.error("Notification error", e);
     res.status(500).json({ success: false, message: e.message });

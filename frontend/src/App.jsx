@@ -4,7 +4,7 @@ import LandingSite from './LandingSite.jsx';
 import LoginPage from './Components/LoginPage.jsx';
 import RegisterPage from './Components/RegisterPage.jsx';
 import HabitTracker from './Components/HabitTracker.jsx';
-import WeeklyReport from './Components/WeeklyReport.jsx';
+import HabitReport from './Components/Report.jsx';
 import './index.css';
 import NotificationPage from './Components/NotificationPage.jsx';
 import GoogleSuccessPage from './Components/GoogleSuccessPage.jsx';
@@ -22,7 +22,7 @@ function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/home" element={<HabitTracker />} />
-      <Route path="/weekly-report" element={<WeeklyReport />} />
+      <Route path="/reports/:userId" element={<HabitReport />} />
       <Route path="/notifications" element={<NotificationPage/>}/>
       <Route path="/google-success" element={<GoogleSuccessPage />} />
 
