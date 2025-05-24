@@ -5,34 +5,36 @@ import { FaChrome, FaCheckCircle } from 'react-icons/fa';
 const NotificationPage = () => {
   const [notifications, setNotifications] = useState([]);
 
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
- let token = localStorage.getItem('token');
- if (!token.startsWith('Bearer ')) {
-  token = `Bearer ${token}`;
-}
+useEffect(() => {
+  const fetchNotifications = async () => {
+    try {
+      let token = localStorage.getItem('token');
+      if (!token.startsWith('Bearer ')) {
+        token = `Bearer ${token}`;
+      }
+
       const res = await fetch('http://localhost:5000/notifications', {
-         method: 'GET',
-        headers: { 
+        method: 'GET',
+        headers: {
           'Content-Type': 'application/json',
           Authorization: token,
-        }
+        },
       });
+
       if (!res.ok) {
-        const errorText = await res.text(); // Read response as text to avoid JSON parse error
+        const errorText = await res.text();
         throw new Error(`Error ${res.status}: ${errorText}`);
       }
+
       const data = await res.json();
       setNotifications(data);
+    } catch (err) {
+      console.error('Failed to fetch notifications:', err.message);
     }
-catch (err) {
-      console.error("Failed to fetch notifications:", err.message);
-};
-      }
-     
-    fetchNotifications();
-  }, []);
+  };
+
+  fetchNotifications();
+}, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-100 via-white to-blue-50 relative overflow-hidden px-6 py-10">
