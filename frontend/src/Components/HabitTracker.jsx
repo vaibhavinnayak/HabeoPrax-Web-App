@@ -81,7 +81,7 @@ if (!token.startsWith('Bearer ')) {
    useEffect(() => {
     if (!hasFetched) return; 
     let token=localStorage.getItem('token')
-    console.log(habits)
+  
     if(!token) return;
     if (!token.startsWith('Bearer ')) {
   token = `Bearer ${token}`;
@@ -290,7 +290,7 @@ const saveHabit = () => {
 
     if (habit.done) {
       const today = new Date().getDay(); 
-      console.log('habit.day:', habit.day);
+     
       const targetDay = dayToIndex[habit.day[0]];
       if (typeof targetDay !== 'number') {
       console.error('Invalid habit day:', habit.day);
@@ -389,7 +389,7 @@ const saveHabit = () => {
     setIsDarkMode(newMode);
     localStorage.setItem('dark-mode', newMode.toString());
   };
-console.log("userName is:", userName);
+
   return(     
   <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 text-gray-800 dark:text-gray-100 transition-colors duration-500 p-6 sm:p-8 font-sans">
             {/* Notification */}
@@ -499,20 +499,6 @@ console.log("userName is:", userName);
                             + Add New Habit
                         </button>
                     </div>
-
-                    <button
-                        onClick={() => addHabit({
-                            title: 'New Habit',
-                            icon: '🔥',
-                            duration: '10 mins',
-                            time: '8:00 a.m',
-                            day: ['Thursday'],
-                            done: false
-                        })}
-                        className="mb-6 bg-green-600 dark:bg-green-500 text-white px-5 py-2 rounded-lg shadow-md hover:bg-green-700 transition-colors"
-                    >
-                        Quick Add Habit
-                    </button>
 
                     <div className="space-y-4">
                         {habits.map((habit, index) => (

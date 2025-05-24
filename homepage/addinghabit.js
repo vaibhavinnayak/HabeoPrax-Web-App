@@ -33,19 +33,16 @@ router.get('/habitdata', async (req, res) => {
 
 router.put('/habitdata',async (req,res)=> {
   const auth = req.headers.authorization;
- console.log("Authorization Header:", auth); 
      if (!auth?.startsWith('Bearer ')) {
     return res.status(401).json({ success: false, message: 'No token provided' });
   }
     const token = auth.split(' ').pop().trim();
-console.log("Token:", token); 
   try {
  
    const  payload = jwt.verify(token, process.env.JWT_SECRET);
  const userId = payload.id;
   const habits=req.body.habits;
   try {
-    console.log(habits);
     
 const result=await Habitmodel.updateOne(
     {userId:userId },
@@ -56,7 +53,7 @@ const result=await Habitmodel.updateOne(
     },
     { upsert: true } 
   );
-  console.log("about adding habits ",result)
+
 return res.status(200).json({success:true,message:"Added habits successfully"})
 }
 catch(e) {

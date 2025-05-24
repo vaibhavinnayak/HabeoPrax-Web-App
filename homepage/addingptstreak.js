@@ -13,20 +13,16 @@ dotenv.config({
 
 router.put('/addingptstreak',async (req,res)=> {
   const auth = req.headers.authorization;
- console.log("Authorization Header:", auth); 
      if (!auth?.startsWith('Bearer ')) {
     return res.status(401).json({ success: false, message: 'No token provided' });
   }
-    const token = auth.split(' ').pop().trim();
-console.log("Token:", token); 
+    const token = auth.split(' ').pop().trim(); 
   try {
  
    const  payload = jwt.verify(token, process.env.JWT_SECRET);
  const username = payload.username;
   const {points,streak,badges}=req.body;
   try {
-   
-   console.log(points,streak);
 
 await Usermodel.updateOne(
     { username:username }, 

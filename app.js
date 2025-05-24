@@ -33,14 +33,14 @@ app.use(passport.initialize());
 const saltRound = 10
 
  connecttoDB((err) => {
-  console.log("trying to connect")
+  
   if (!err) {
   
    app.post('/register', (req, res) => {
       bcrypt.hash(req.body.password, saltRound)
         .then((hashedpassword) => {
           req.body.password = hashedpassword
-          console.log("Hashed password: ",hashedpassword)
+      
           Usermodel.create(req.body)
             .then((data) => {
               console.log("User data: ",data)
@@ -74,10 +74,7 @@ const saltRound = 10
 
     app.post('/login', (req, res) => {
       const {username, email, password } = req.body;
-      console.log(email)
-      console.log(username)
-      console.log(password)
-
+   
       Usermodel.findOne({ email: email })
         .then((user) => {
           if (user) {
@@ -271,7 +268,7 @@ app.post('/notify-completion', passport.authenticate('jwt', { session: false }),
     }
   }
 });
-        console.log("db connection :D")
+       
       
           
     app.listen(PORT, () => {

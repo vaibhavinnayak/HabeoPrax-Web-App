@@ -28,7 +28,6 @@ const HabitReport = () => {
   useEffect(() => {
     axios.get(`http://localhost:5000/reports/${userId}`)
       .then(res => {
-        console.log("Received habit report data:", res.data); 
         setHabitData(res.data);
       })
       .catch(err => console.error("Error fetching report:", err));
