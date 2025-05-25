@@ -26,8 +26,9 @@ const LoginPage = () => {
       }
 
       if (data.success) {
-        console.log('Received data.token:', data.token);
         localStorage.setItem('token', data.token);
+        localStorage.setItem("userName", data.name);
+        localStorage.setItem('userId', data._id);
         alert("Login successful!");
         navigate("/home"); 
       } else {

@@ -35,7 +35,7 @@ chrome.runtime.onStartup.addListener(() => {
     if (result.pendingHabits) {
       chrome.storage.sync.set({ habits: result.pendingHabits }, () => {
         chrome.storage.local.remove("pendingHabits");
-        console.log("Offline habits synced to Chrome storage.");
+      
       });
     }
   });

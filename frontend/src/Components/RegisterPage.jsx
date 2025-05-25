@@ -10,7 +10,7 @@ const RegisterPage = () => {
   
   const handleRegister = async (e) => {
     e.preventDefault();  
-
+      
     try {
       const response = await fetch("http://localhost:5000/register", {
         method: "POST",

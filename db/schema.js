@@ -38,6 +38,10 @@ const UserSchema = new mongoose.Schema({
   notifications: [notificationSchema],
   streak: Number,
   token: String,
+  badges: {
+  type: [String],
+  default: [],
+}
 });
 
 
@@ -78,6 +82,15 @@ const HabitSchema = new mongoose.Schema({
   points: {
     type:Number,
     min:0,
+  }, 
+  createdAt: {
+      type: Date,
+      default: Date.now,
+      required: true,
+    },
+  completedAt: {
+    type: Date,
+    default: null,
   }
  }
  

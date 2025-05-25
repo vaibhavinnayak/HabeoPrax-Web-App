@@ -13,36 +13,33 @@ dotenv.config({
 
 router.put('/addingptstreak',async (req,res)=> {
   const auth = req.headers.authorization;
- console.log("Authorization Header:", auth); 
      if (!auth?.startsWith('Bearer ')) {
     return res.status(401).json({ success: false, message: 'No token provided' });
   }
-    const token = auth.split(' ').pop().trim();
-console.log("Token:", token); 
+    const token = auth.split(' ').pop().trim(); 
   try {
  
    const  payload = jwt.verify(token, process.env.JWT_SECRET);
  const username = payload.username;
-  const {points,streak}=req.body;
+  const {points,streak,badges}=req.body;
   try {
-   
-   console.log(points,streak);
 
 await Usermodel.updateOne(
     { username:username }, 
     { 
       $set: { 
         points: points,  
-        streak: streak    
+        streak: streak,
+        badges:badges||[],    
       }
     },
     { upsert: true } 
   );
-return res.status(200).json({success:true,message:"Added points & streakcount successfully"})
+return res.status(200).json({success:true,message:"Added points & streak count & badges successfully"})
 }
 catch(e) {
   console.log(e);
-  return res.status(500).json({success:false,message:"Adding points & streakcount failed"})
+  return res.status(500).json({success:false,message:"Adding points & streakcount & badges failed"})
 }
   } catch (err) {
     return res.status(401).json({ success: false, message: 'Invalid or expired token' });

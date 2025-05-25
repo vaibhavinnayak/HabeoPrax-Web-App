@@ -16,6 +16,8 @@ dotenv.config();
 configurePassport(passport);
 import homeRoute from './homepage/addinghabit.js'
 import pointRoute from './homepage/addingptstreak.js'
+import progressRoute from './homepage/userprogress.js'
+import reportRoute from './homepage/report.js';
 const app = express();
 const PORT = process.env.PORT;
 
@@ -23,20 +25,22 @@ app.use(cors());
 app.use(express.json());
 app.use(homeRoute);
 app.use(pointRoute);
+app.use(progressRoute);
+app.use(reportRoute);
 app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
 
 const saltRound = 10
 
  connecttoDB((err) => {
-  console.log("trying to connect")
+  
   if (!err) {
   
    app.post('/register', (req, res) => {
       bcrypt.hash(req.body.password, saltRound)
         .then((hashedpassword) => {
           req.body.password = hashedpassword
-          console.log("Hashed password: ",hashedpassword)
+      
           Usermodel.create(req.body)
             .then((data) => {
               console.log("User data: ",data)
@@ -49,6 +53,13 @@ const saltRound = 10
              return  res.status(201).json(data)
         })
             .catch((e) => {
+                   if (e.code === 11000) {
+                const duplicateField = Object.keys(e.keyPattern)[0];
+                return res.status(400).json({
+                  success: false,
+                  message: `User with that ${duplicateField} already exists`,
+                });
+              }
               console.log("Error creating user")
               return  res.status(500).json({success:false, message:"Error creating user", error:e.message})
            
@@ -63,10 +74,7 @@ const saltRound = 10
 
     app.post('/login', (req, res) => {
       const {username, email, password } = req.body;
-      console.log(email)
-      console.log(username)
-      console.log(password)
-
+   
       Usermodel.findOne({ email: email })
         .then((user) => {
           if (user) {
@@ -93,13 +101,12 @@ const saltRound = 10
                   message:"Error signing token ",
                   error:err.message||err,})
                     }
-
-                     
-                    //Habitmodel.findOneAndUpdate({ userId: user._id },  { $set: { lastLogin: new Date() } }, { upsert: true }  )
                   
                    return res.json({
                     success: true,
                     token: 'Bearer ' + token,
+                    name: user.username, 
+                   _id: user._id.toString(),
                   })
                 })
 
@@ -108,7 +115,10 @@ const saltRound = 10
               }
               
                 else
-            res.json("You don't have an account,kindly register")
+            return res.status(404).json({
+              success: false,
+              message: "You don't have an account, kindly register",
+            });
           })
     .catch(e =>  {
           console.log("Error logging in")
@@ -166,6 +176,7 @@ app.get('/user', passport.authenticate('jwt', { session: false }), async (req, r
       }
     });
 
+
     app.put('/notifications/:notificationId/read', passport.authenticate('jwt', { session: false }), async (req, res) => {
       try {
         const user = await Usermodel.findById(req.user.id);
@@ -180,6 +191,7 @@ app.get('/user', passport.authenticate('jwt', { session: false }), async (req, r
 
         notification.read = true;
         await user.save();
+
 
         res.json({
           success: true,
@@ -255,10 +267,11 @@ app.get('/user', passport.authenticate('jwt', { session: false }), async (req, r
           }
         }
       }
-    });
 
+    }
+  }
+});
 
-    console.log("db connection :D")
       
           
     app.listen(PORT, () => {

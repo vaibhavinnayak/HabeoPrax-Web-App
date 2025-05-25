@@ -6,6 +6,8 @@ const NotificationPage = () => {
   const [notifications, setNotifications] = useState([]);
   const [activeTab, setActiveTab] = useState('all');
 
+ const userId = localStorage.getItem('userId');
+
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
@@ -35,11 +37,18 @@ const NotificationPage = () => {
     };
 
     fetchNotifications();
-  }, []);
+  }, [])
+
+
 
   const markAsRead = async (notificationId) => {
     try {
       let token = localStorage.getItem('token');
+
+      if (!token) {
+        throw new Error('Token is missing from localStorage');
+      }
+
       if (!token.startsWith('Bearer ')) {
         token = `Bearer ${token}`;
       }
@@ -98,6 +107,7 @@ const NotificationPage = () => {
     : notifications.filter(n => !n.read);
 
   const groupedNotifications = groupNotificationsByDate();
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-100 via-white to-blue-50 flex p-6">
@@ -210,7 +220,9 @@ const NotificationPage = () => {
         <button
           title="Weekly Report"
           className="text-2xl hover:text-purple-600 transition"
-          onClick={() => window.location.href = "/weekly-report"}
+
+          onClick={() => window.location.href = `/reports/${userId}`}
+
         >
           📈
         </button>
@@ -221,12 +233,8 @@ const NotificationPage = () => {
         >
           🔔
         </button>
-        <button
-          title="Settings"
-          className="text-2xl hover:text-purple-600 transition"
-        >
-          ⚙️
-        </button>
+  
+
       </nav>
     </div>
   );
