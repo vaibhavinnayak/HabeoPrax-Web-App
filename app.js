@@ -57,7 +57,7 @@ const saltRound = 10
                 const duplicateField = Object.keys(e.keyPattern)[0];
                 return res.status(400).json({
                   success: false,
-                  message: `User with that ${duplicateField} already exists`,
+                  message: 'User with that ${duplicateField} already exists',
                 });
               }
               console.log("Error creating user")
@@ -142,7 +142,7 @@ app.get('/auth/google/callback',
       const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
       req.user.lastLogin = new Date();
       await req.user.save();
-      res.redirect(`http://localhost:3000/google-success?token=${token}`);
+      res.redirect('http://localhost:3000/google-success?token=${token}');
     } catch (err) {
       console.error("Error generating token for Google login:", err);
       res.redirect('/login?error=token');
@@ -219,7 +219,7 @@ app.get('/user', passport.authenticate('jwt', { session: false }), async (req, r
           console.log("Before pushing notification:", user.notifications.length);
           user.notifications.push({
             type: 'completion',
-            message: `🎉 Awesome! You've completed all your habits for today. Keep it up!`,
+            message: '🎉 Awesome! You have completed all your habits for today. Keep it up!',
             timestamp: new Date()
           });
           console.log("After pushing notification:", user.notifications.length);
@@ -234,53 +234,48 @@ app.get('/user', passport.authenticate('jwt', { session: false }), async (req, r
       }
     });
 
-    cron.schedule('*/10 * * * *', async () => {
-      const now = new Date();
-      const users = await Usermodel.find();
+   cron.schedule('*/10 * * * *', async () => {
+  const now = new Date();
+  const users = await Usermodel.find();
 
-      for (const user of users) {
-        const userHabits = await Habitmodel.findOne({ userId: user._id });
-        if (!userHabits) continue;
+  for (const user of users) {
+    const userHabits = await Habitmodel.findOne({ userId: user._id });
+    if (!userHabits) continue;
 
-        for (const habit of userHabits.habits) {
-          const habitTime = moment(habit.time, ['h:mm A', 'HH:mm']);
-          const nowTime = moment();
+    for (const habit of userHabits.habits) {
+      const habitTime = moment(habit.time, ['h:mm A', 'HH:mm']);
+      const nowTime = moment();
 
-          const today = nowTime.format('dddd');
-          const isToday = habit.day.includes(today);
-          const isLate = nowTime.diff(habitTime, 'minutes') > 60;
-          const notDone = !habit.done;
+      const today = nowTime.format('dddd');
+      const isToday = habit.day.includes(today);
+      const isLate = nowTime.diff(habitTime, 'minutes') > 60;
+      const notDone = !habit.done;
 
-          if (isToday && isLate && notDone) {
-            const alreadyNotified = user.notifications.some(n => 
-              n.message.includes(habit.title) &&
-              moment(n.timestamp).isAfter(moment().subtract(6, 'hours'))
-            );
-            if (!alreadyNotified) {
-              user.notifications.push({
-                type: 'reminder',
-                message: `⏰ You haven't completed "${habit.title}" scheduled for ${habit.time}. Stay on track!`,
-                timestamp: new Date(),
-              });
-              await user.save();
-            }
-          }
+      if (isToday && isLate && notDone) {
+        const alreadyNotified = user.notifications.some(n => 
+          n.message.includes(habit.title) &&
+          moment(n.timestamp).isAfter(moment().subtract(6, 'hours'))
+        );
+        if (!alreadyNotified) {
+          user.notifications.push({
+            type: 'reminder',
+            message: `⏰ You haven't completed "${habit.title}" scheduled for ${habit.time}. Stay on track!`,
+            timestamp: new Date(),
+          });
+          await user.save();
         }
       }
-
     }
   }
-});
-
-      
+}); 
           
     app.listen(PORT, () => {
-      console.log(`listening to ${PORT}`)
+      console.log('listening to ${PORT}')
     })
   } else {
     console.error("DB Connection failed")
     app.listen(PORT, () => {
-      console.log(`listening to ${PORT}`)
+      console.log('listening to ${PORT}')
     })
   }
 })
