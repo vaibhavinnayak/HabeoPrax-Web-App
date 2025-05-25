@@ -14,25 +14,25 @@
 
 ---
 
-## 📖 About
+## About
 
 HabeoPrax was built with a vision to make habit-building fun and effective. Whether it's drinking water, working out, or staying productive, forming habits is hard, but we believe that consistency becomes easier with clarity and rewards. Through beautiful charts, a gamified reward system, and seamless syncing via a Chrome extension, HabeoPrax empowers users to visualize their growth and stay committed.
 
-## ✨ Features
+## Features
 
-### 🌐 Web Application
-- **📊 Visual Analytics**: Interactive charts showing habit streaks, category-wise statistics, and progress tracking
-- **🎮 Gamified Rewards**: Points, badges, and streak counters to boost motivation
-- **👤 User Authentication**: Secure login/signup with personalized dashboards
-- **📧 Email Notifications**: Automated reminders via Nodemailer
-- **🔔 Web Notifications**: Real-time browser notifications for habit reminders
-- **📱 Responsive Design**: Seamless experience across all devices
+###  Web Application
+- **Visual Analytics**: Interactive charts showing habit streaks, category-wise statistics, and progress tracking
+- **Gamified Rewards**: Points, badges, and streak counters to boost motivation
+- **User Authentication**: Secure login/signup with personalized dashboards
+- **Email Notifications**: Automated reminders via Nodemailer
+- **Web Notifications**: Real-time browser notifications for habit reminders
+- **Responsive Design**: Seamless experience across all devices
 
-### 🔧 Chrome Extension
-- **🔔 System Notifications**: Native system tray notifications
-- **🎯 Lightweight UI**: Minimal interface for quick interactions
+### Chrome Extension
+- **System Notifications**: Native system tray notifications
+- **Lightweight UI**: Minimal interface for quick interactions
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 ### Frontend
 - **HTML, CSS, JavaScript** - Core web technologies
@@ -54,7 +54,7 @@ HabeoPrax was built with a vision to make habit-building fun and effective. Whet
 ### Deployment
 - **Vercel** - Frontend and backend hosting platform
 
-## 🚀 Installation
+## Installation
 
 ### Prerequisites
 - Node.js (v14 or higher)
@@ -113,7 +113,7 @@ npm run dev
 4. The HabeoPrax extension should now appear in your toolbar
 <br>
 
-## 📱 Usage
+## Usage
 
 ### Getting Started
 1. **Sign Up**: Create your account on the web application
@@ -129,7 +129,7 @@ npm run dev
 - **Notifications**: Stay reminded with email and browser notifications
 <br>
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 Directory structure:
@@ -210,7 +210,7 @@ Directory structure:
 
 <br>
 
-## 🚀 Deployment
+## Deployment
 
 ### Vercel Deployment
 1. Connect your GitHub repository to Vercel
@@ -227,18 +227,18 @@ npm run build
 
 <br>
 
-## 🔮 Future Scope
+## Future Scope
 
-- **📱 Mobile Application**: Native iOS and Android apps
-- **🤝 Social Features**: Community challenges and friend connections
-- **🤖 AI Integration**: Machine learning for personalized recommendations
-- **📈 Advanced Analytics**: Predictive insights and trend analysis
-- **⌚ Wearables Integration**: Connect with fitness trackers and smartwatches
+- **Mobile Application**: Native iOS and Android apps
+- **Social Features**: Community challenges and friend connections
+- **AI Integration**: Machine learning for personalized recommendations
+- **Advanced Analytics**: Predictive insights and trend analysis
+- **Wearables Integration**: Connect with fitness trackers and smartwatches
 <br>
 
-## 👥 Team
+## Team
 
-### 🎯 Mentors
+### Mentors
 - **Varshini Adurti**
   - 📞 9632079916
   - 📧 varshini.231cs204@nitk.edu.in
@@ -257,7 +257,6 @@ npm run build
 
 ## 📄 License
 Yet to be added.
-
 
 ---
 
