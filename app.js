@@ -115,7 +115,10 @@ const saltRound = 10
               }
               
                 else
-            return res.json("You don't have an account,kindly register")
+            return res.status(404).json({
+              success: false,
+              message: "You don't have an account, kindly register",
+            });
           })
     .catch(e =>  {
           console.log("Error logging in")
