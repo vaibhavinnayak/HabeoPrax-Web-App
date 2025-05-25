@@ -35,7 +35,7 @@ await Usermodel.updateOne(
     },
     { upsert: true } 
   );
-return res.status(200).json({success:true,message:"Added points & streakcoount & badges successfully"})
+return res.status(200).json({success:true,message:"Added points & streak count & badges successfully"})
 }
 catch(e) {
   console.log(e);
