@@ -205,6 +205,11 @@ Directory structure:
 
 <br>
 
+## DB Structure
+![WhatsApp Image 2025-05-25 at 17 05 16_30d0ebc2](https://github.com/user-attachments/assets/c3e32205-ab82-4361-a146-1488705e729a)
+
+<br>
+
 ## 🚀 Deployment
 
 ### Vercel Deployment
