@@ -42,6 +42,9 @@ const NotificationPage = () => {
   const markAsRead = async (notificationId) => {
     try {
       let token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Token is missing from localStorage');
+      }
       if (!token.startsWith('Bearer ')) {
         token = `Bearer ${token}`;
       }
