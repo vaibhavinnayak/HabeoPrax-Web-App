@@ -1,16 +1,9 @@
-# HabeoPrax 🚀
+# HabeoPrax
 ## Master Your Habits, Master Your Life
-<p align="center">
-  <img src="frontend/public/logo.png" alt="App Screenshot" width="50%">
-</p>
-
-<div align="center">
 
 *A smart, engaging habit tracking web application with Chrome extension that helps users build and maintain healthy habits through insightful statistics, motivational rewards, and an intuitive user interface.*
 
-[🌟 Features](#features) • [🚀 Demo](#demo) • [📦 Installation](#installation) • [🛠️ Usage](#usage) 
 
-</div>
 
 ---
 
@@ -227,27 +220,13 @@ npm run build
 
 <br>
 
-## Future Scope
-
-- **Mobile Application**: Native iOS and Android apps
-- **Social Features**: Community challenges and friend connections
-- **AI Integration**: Machine learning for personalized recommendations
-- **Advanced Analytics**: Predictive insights and trend analysis
-- **Wearables Integration**: Connect with fitness trackers and smartwatches
-<br>
-
 ## Team
 
 ### Mentors
 - **Varshini Adurti**
-  - 📞 9632079916
-  - 📧 varshini.231cs204@nitk.edu.in
-
 - **Vaibhavi Nagaraja Nayak**
-  - 📞 9036096295
-  - 📧 vaibhavi.231cs262@nitk.edu.in
 
-### 👨‍💻 Mentees (Team C01)
+### Mentees 
 - **Anirudh Nayak**
 - **Appaji Nagaraja Dheeraj**
 - **Ajitesh Kallepalli**
@@ -255,13 +234,3 @@ npm run build
 
 <br>
 
-## 📄 License
-Yet to be added.
-
----
-
-<div align="center">
-
-**Made with ❤️ by Team C01**
-
-</div>
