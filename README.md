@@ -4,9 +4,6 @@
 *A smart, engaging habit tracking web application with Chrome extension that helps users build and maintain healthy habits through insightful statistics, motivational rewards, and an intuitive user interface.*
 
 
-
----
-
 ## About
 
 HabeoPrax was built with a vision to make habit-building fun and effective. Whether it's drinking water, working out, or staying productive, forming habits is hard, but we believe that consistency becomes easier with clarity and rewards. Through beautiful charts, a gamified reward system, and seamless syncing via a Chrome extension, HabeoPrax empowers users to visualize their growth and stay committed.
@@ -56,7 +53,7 @@ HabeoPrax was built with a vision to make habit-building fun and effective. Whet
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/AppajiDheeraj/HabeopPrax.git
+git clone https://github.com/vaibhavinnayak/HabeoPrax-Web-App.git
 cd HabeoPrax
 ```
 
@@ -126,7 +123,7 @@ npm run dev
 
 ```
 Directory structure:
-└── appajidheeraj-habeoprax/
+└── vaibhavinnayak/HabeoPrax-Web-App
     ├── README.md
     ├── app.js
     ├── emailNotifications.js
